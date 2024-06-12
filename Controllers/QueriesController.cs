@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApiKurs.Models;
-using WebApiKurs.Models.Dto;
-using WebApiKurs.Models.Tables;
 
 namespace WebApiKurs.Controllers;
 

@@ -13,5 +13,5 @@ public class ClientsController(TurAgancyContext context) : Controller
     private TurAgancyContext _db = context;
 
     [HttpGet]
-    public IEnumerable<Client> Get() => _db.Clients.ToList();
+    public JsonResult Get() => new(_db.Clients.ToList());
 }
