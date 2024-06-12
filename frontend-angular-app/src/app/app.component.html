@@ -1,0 +1,206 @@
+<header class ="p-4 bg-primary text-white text-center">
+    <h1>{{ title }}</h1>
+</header>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+    <div class="ps-5 container-fluid">
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">
+            <i class="bi bi-house"></i>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#appNavbar-1">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="appNavbar-1">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/trips" routerLinkActive="active">
+                        Поездки
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/roads" routerLinkActive="active">
+                        Маршруты
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/clients" routerLinkActive="active">
+                        Клиенты
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/goals" routerLinkActive="active">
+                        Цели поездки
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" routerLink="/countries" routerLinkActive="active">
+                        Страны
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button"
+                   data-bs-toggle="dropdown"
+                   title="Отчеты по работе турагентства">Отчеты</a>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li>
+                        <a class="dropdown-item modal-link"
+                           data-bs-toggle="modal"
+                           data-bs-target="#get-road-goal">
+                            Маршруты по цели
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item modal-link"
+                           data-bs-toggle="modal"
+                           data-bs-target="#get-goal-price">
+                            Маршруты по цели и стоимости транспорта
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item modal-link"
+                           data-bs-toggle="modal"
+                           data-bs-target="#get-days">
+                            Клиенты по количеству дней пребывания
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           routerLink="/query04">
+                            Мин., ср. и макс. цена 1 дня пребывания
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           routerLink="/query05">
+                            Среднюю стоимость транспортных услуг для поездок
+                        </a>
+                    </li>
+                </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container mt-5">
+    <div class="row pt-2">
+        <router-outlet></router-outlet>
+    </div>
+</main>
+
+<!--
+Рендерим форму ввода параметра выборки маршрутов - цель поездки
+Форма модальная, т.е. ее разметка может быть размещена в произвольном месте,
+форма вызывается на клиенте, за счет JS-кода Bootstrap, по клику на пункт меню
+в навигационной панели
+-->
+<div id="get-road-goal" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Параметр выборки</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="form-road-goal" class="p-3" method="get"
+                      action="#" >
+                    <!-- список целей поездки -->
+                    <div class="mb-3">
+                        <label class="form-label" for="select-goal">Цель поездки:</label>
+                        <select class="form-select" id="select-goal" name="RoadGoal" [(ngModel)]="goalName">
+                            @for(goal of goals; track $index){
+                                <option value="{{goal.goalName}}">{{goal.goalName}}</option>
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-primary" routerLink="/query01">Выбрать</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+Рендерим форму ввода параметра выборки маршрутов - цель поездки и цена за транспортные услуги
+Форма модальная, т.е. ее разметка может быть размещена в произвольном месте,
+форма вызывается на клиенте, за счет JS-кода Bootstrap, по клику на пункт меню
+в навигационной панели
+-->
+<div id="get-goal-price" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Параметры выборки</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="form-goal-price" class="p-3"
+                      asp-controller="TouristicRoutes" asp-action="Where" asp-route-key="length-in-range">
+                     <!-- начальное значение интервала -->
+                     <div class="my-3">
+                         <label class="form-label" for="price">Верхний порог стоимости транспортных услуг, руб.:</label>
+                         <input id="price" name="Price" class="form-control" type="number" value="0" step="1" min="0" />
+                     </div>
+                    <!-- список целей поездки -->
+                    <div class="mb-3">
+                        <label class="form-label" for="choosen-goal">Цель поездки:</label>
+                        <select class="form-select" id="choosen-goal" name="RoadGoal">
+                            @for(goal of goals; track $index){
+                                <option value="{{goal.goalName}}">{{goal.goalName}}</option>
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="form-goal-price">Выбрать</button>                                       <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+Рендерим форму ввода параметра выборки клиентов - дни пребывания в стране
+Форма модальная, т.е. ее разметка может быть размещена в произвольном месте,
+форма вызывается на клиенте, за счет JS-кода Bootstrap, по клику на пункт меню
+в навигационной панели
+-->
+<div id="get-days" class="modal fade">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Параметр выборки</h4>
+            </div>
+
+            <div class="modal-body">
+                <form id="form-days" class="p-3"
+                      asp-controller="TouristicRoutes" asp-action="Where" asp-route-key="start-point">
+                    <!-- Количество дней пребывания в стране -->
+                    <div class="my-3">
+                        <label class="form-label" for="days">Количество дней пребывания в стране:</label>
+                        <input id="days" name="days" class="form-control" type="number" value="0" step="1" min="1" />
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="form-road-goal">Выбрать</button>                                       <h3></h3>
+            </div>
+        </div>
+    </div>
+</div>

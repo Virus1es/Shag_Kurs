@@ -1,0 +1,51 @@
+<table id="table" class="table table-bordered table-hover w-100 mx-auto">
+    <thead>
+    <tr class="bg-light text-black align-middle">
+        <th>Ид</th>
+        <th>ФИО клиента</th>
+        <th>Страна пребывания</th>
+        <th>Цель поездки</th>
+        <th>Дата прибытия в страну</th>
+        <th>Количество дней пребывания в стране</th>
+        <th>Стоимость поездки, руб.</th>
+        <th class="text-center">
+        <a class="btn btn-outline-success ms-2"
+           routerLink="/trips/add"
+           title="Добавить...">
+            <i class="bi bi-plus-square"></i>
+        </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+
+        @for(trip of trips; track $index){
+            <tr class="align-middle">
+                <td class="text-end px-3">{{trip.id}}</td>
+                <td>{{trip.client.surname + ' ' + trip.client.name[0] + '.' + trip.client.patronymic[0] + '.'}}</td>
+                <td>{{trip.road.country.countryName}}</td>
+                <td>{{trip.road.goal.goalName}}</td>
+                <td>{{trip.dateStart | date:'dd.MM.yyyy'}}</td>
+                <td class="text-end px-3">{{trip.daysAmount}}</td>
+                <td class="text-end px-3">{{
+                        ((trip.road.country.pricePerDay + trip.road.goal.pricePerDay) * trip.daysAmount +
+                          trip.road.country.transportPrice + trip.road.country.visaPrice)
+                            | currency:"RUB":""}}</td>
+                <td class="text-center">
+                <a class="btn btn-outline-primary ms-2"
+                   routerLink="/trips/update"
+                   title="Изменить...">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <a class="btn btn-outline-danger ms-2"
+                   routerLink="/trips/delete"
+                   title="Удалить...">
+                    <i class="bi bi-trash3"></i>
+                </a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,25 @@
+<table id="table" class="table table-bordered table-hover w-100 mx-auto">
+    <thead>
+    <tr class="bg-light text-black align-middle">
+        <th>Ид</th>
+        <th>Страна пребывания</th>
+        <th>Цель поездки</th>
+        <th>Стоимость 1 дня пребывания, руб.</th>
+        <th>Стоимость транспортных услуг, руб.</th>
+        <th>Стоимость оформления визы, руб.</th>
+    </tr>
+    </thead>
+    <tbody>
+        @for(road of roads; track $index){
+            <tr class="align-middle">
+                <td>{{road.id}}</td>
+                <td>{{road.country.countryName}}</td>
+                <td>{{road.goal.goalName}}</td>
+                <td class="text-end px-3">{{(road.country.pricePerDay + road.goal.pricePerDay) | currency:"RUB":""}}</td>
+                <td class="text-end px-3">{{road.country.transportPrice | currency:"RUB":""}}</td>
+                <td class="text-end px-3">{{road.country.visaPrice | currency:"RUB":""}}</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

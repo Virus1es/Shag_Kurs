@@ -1,0 +1,19 @@
+<table id="table" class="table table-bordered table-hover w-50 mx-auto">
+    <thead>
+    <tr class="bg-light text-black align-middle">
+        <th>Ид</th>
+        <th>Цель поездки</th>
+        <th>Стоимость 1 дня пребывания в стране, руб.</th>
+    </tr>
+    </thead>
+    <tbody>
+        @for(goal of goals; track $index){
+            <tr class="align-middle">
+                <td>{{goal.id}}</td>
+                <td>{{goal.goalName}}</td>
+                <td class="text-end px-3">{{goal.pricePerDay | currency:"RUB":""}}</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
